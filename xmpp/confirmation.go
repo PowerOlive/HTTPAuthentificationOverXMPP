@@ -51,8 +51,8 @@ func (confirmation *Confirmation) SendConfirmation() {
 func (confirmation *Confirmation) askViaIQ() {
 	stanzaID++
 	stanzaIDstr := strconv.Itoa(stanzaID)
-	m := xmpp.Iq{Type: xmpp.IQTypeGet, To: confirmation.JID, From: jid.Full(), Id: stanzaIDstr}
-	confirm := &xmpp.Confirm{Id: confirmation.Transaction, Method: confirmation.Method, URL: confirmation.Domain}
+	m := xmpp.IQ{Type: xmpp.IQTypeGet, To: confirmation.JID, From: jid.Full(), ID: stanzaIDstr}
+	confirm := &xmpp.Confirm{ID: confirmation.Transaction, Method: confirmation.Method, URL: confirmation.Domain}
 	m.PayloadEncode(confirm)
 	WaitIqMessages[stanzaIDstr] = confirmation
 	comp.Out <- m
@@ -65,7 +65,7 @@ func (confirmation *Confirmation) askViaMessage() {
 	m := xmpp.Message{From: jid.Full(), To: confirmation.JID, Type: xmpp.MessageTypeNormal}
 	m.Thread = xmpp.SessionID()
 	confirmation.setBodies(&m)
-	m.Confirm = &xmpp.Confirm{Id: confirmation.Transaction, Method: confirmation.Method, URL: confirmation.Domain}
+	m.Confirm = &xmpp.Confirm{ID: confirmation.Transaction, Method: confirmation.Method, URL: confirmation.Domain}
 
 	log.Printf("%sSend message %v", LogInfo, m)
 	WaitMessageAnswers[confirmation.Transaction] = confirmation

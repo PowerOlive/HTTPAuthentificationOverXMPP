@@ -95,7 +95,7 @@ func mainXMPP() {
 		case *xmpp.Message:
 			confirm := v.Confirm
 			if confirm != nil {
-				confirmation := WaitMessageAnswers[confirm.Id]
+				confirmation := WaitMessageAnswers[confirm.ID]
 				processConfirm(v, confirmation)
 			} else {
 				// If body is the confirmation id, it will be considerated as accepted.
@@ -109,7 +109,7 @@ func mainXMPP() {
 				}
 			}
 
-		case *xmpp.Iq:
+		case *xmpp.IQ:
 			switch v.PayloadName().Space {
 			case xmpp.NSDiscoInfo:
 				execDisco(v)
@@ -131,12 +131,12 @@ func mainXMPP() {
 			case xmpp.NSHTTPAuth:
 				confirm := &xmpp.Confirm{}
 				v.PayloadDecode(confirm)
-				confirmation := WaitIqMessages[v.Id]
+				confirmation := WaitIqMessages[v.ID]
 				processConfirm(v, confirmation)
 
 			default:
 				// Handle reply iq that doesn't contain HTTP-Auth namespace
-				confirmation := WaitIqMessages[v.Id]
+				confirmation := WaitIqMessages[v.ID]
 				processConfirm(v, confirmation)
 
 				if confirmation == nil {
@@ -154,7 +154,7 @@ func mainXMPP() {
 
 func processConfirm(x interface{}, confirmation *Confirmation) {
 	mes, mesOK := x.(*xmpp.Message)
-	iq, iqOK := x.(*xmpp.Iq)
+	iq, iqOK := x.(*xmpp.IQ)
 
 	if confirmation != nil {
 		if mesOK && mes.Error != nil {
@@ -195,7 +195,7 @@ func must(v interface{}, err error) interface{} {
 	return v
 }
 
-func execDisco(iq *xmpp.Iq) {
+func execDisco(iq *xmpp.IQ) {
 	log.Printf("%sDisco Feature", LogInfo)
 
 	discoInfoReceived := &xmpp.DiscoItems{}
@@ -226,7 +226,7 @@ func execDisco(iq *xmpp.Iq) {
 	}
 }
 
-func execDiscoCommand(iq *xmpp.Iq) {
+func execDiscoCommand(iq *xmpp.IQ) {
 	log.Printf("%sAd-Hoc Command", LogInfo)
 	reply := iq.Response(xmpp.IQTypeResult)
 	discoItem := &xmpp.DiscoItems{Node: xmpp.NodeAdHocCommand}
