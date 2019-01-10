@@ -19,7 +19,7 @@ const (
 	TEMPLATE_DOMAIN          = "_DOMAIN_"
 	TEMPLATE_METHOD          = "_METHOD_"
 	TEMPLATE_VALIDATION_CODE = "_VALIDE_CODE_"
-	DEFAULT_MESSAGE          = "_DOMAIN_ (with method _METHOD_) need to validate your identity, do you agree ?\nValidation code : _VALIDE_CODE_\nPlease check that this code is the same as on _DOMAIN_.\n\nIf your client doesn't support that functionnality, please send back the validation code to confirm the request."
+	DEFAULT_MESSAGE          = "_DOMAIN_ wants to validate your identity. \n\nValidation code: _VALIDE_CODE_\n\nClick \"yes\" or send back the validation code to login."
 )
 
 var (
